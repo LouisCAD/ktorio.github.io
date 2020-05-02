@@ -67,3 +67,34 @@ val client = HttpClient() {
 ```
 
 This feature implements the IETF's [RFC 2617](https://tools.ietf.org/html/rfc2617).
+
+### Custom
+
+In addition to the built-in auth providers mentioned above, you can make your own by implementing the `AuthProvider` interface, and add it to the `providers` (mutable) list:
+
+```kotlin
+val client = HttpClient() {
+    install(Auth) {
+        providers += MyAuthProvider()
+    }
+}
+```
+
+```kotlin
+import io.ktor.client.features.auth.AuthProvider
+import io.ktor.client.request.HttpRequestBuilder
+import io.ktor.http.auth.HttpAuthHeader
+
+class MyAuthProvider : AuthProvider {
+    override val sendWithoutRequest: Boolean
+        get() = TODO()
+
+    override suspend fun addRequestHeaders(request: HttpRequestBuilder) {
+        TODO()
+    }
+
+    override fun isApplicable(auth: HttpAuthHeader): Boolean {
+        TODO()
+    }
+}
+```
